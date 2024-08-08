@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@layer reset, base, components, utils;
+
+@layer reset {
+    /* Reset and base styles  */
+    * {
+        padding: 0px;
+        margin: 0px;
+        border: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    /* Links */
+
+    a,
+    a:link,
+    a:visited {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    /* Common */
+
+    aside,
+    nav,
+    footer,
+    header,
+    section,
+    main {
+        display: block;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        font-size: inherit;
+        font-weight: inherit;
+    }
+
+    ul,
+    ul li {
+        list-style: none;
+    }
+
+    img {
+        vertical-align: top;
+    }
+
+    img,
+    svg {
+        max-width: 100%;
+        height: auto;
+    }
+
+    address {
+        font-style: normal;
+    }
+
+    /* Form */
+
+    input,
+    textarea,
+    button,
+    select {
+        font-family: inherit;
+        font-size: inherit;
+        color: inherit;
+        background-color: transparent;
+    }
+
+    input::-ms-clear {
+        display: none;
+    }
+
+    button,
+    input[type='submit'] {
+        display: inline-block;
+        box-shadow: none;
+        background-color: transparent;
+        background: none;
+        cursor: pointer;
+    }
+
+    input:focus,
+    input:active,
+    button:focus,
+    button:active {
+        outline: none;
+    }
+
+    button::-moz-focus-inner {
+        padding: 0;
+        border: 0;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    legend {
+        display: block;
+    }
+}
+
+@layer base {
+    :root {
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Open Sans', mono;
+    }
+
+    body {
+        color: #eee;
+        min-height: 100dvh;
+        background: rgb(0, 0, 0);
+        background: radial-gradient(
+            circle at bottom left,
+            rgba(68, 68, 68, 1) 0%,
+            rgba(51, 51, 51, 1) 20%,
+            rgba(17, 17, 17, 1) 100%
+        );
+        padding: 10px 20px;
+    }
+}
+
+@layer components {
+    #root {
+        height: calc(100dvh - 20px);
+        display: grid;
+        grid-template-rows: 60px 1fr 30px;
+    }
+}
