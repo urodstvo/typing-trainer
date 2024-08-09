@@ -1,0 +1,53 @@
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 8px;
+
+    width: clamp(240px, 75%, 1024px);
+    height: clamp(360px, 75%, 600px);
+    padding: 20px;
+
+    background-color: #222;
+    border-radius: 8px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: #444;
+    margin-bottom: 12px;
+}
+
+.modalTitle {
+    padding-inline: 20px;
+}
+
+.modalBody {
+    padding-inline: 20px;
+    display: flex;
+    height: 100%;
+}
+
+.closeButton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
