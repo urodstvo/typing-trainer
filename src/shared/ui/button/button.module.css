@@ -1,0 +1,26 @@
+button {
+    padding: 4px 8px;
+    border-radius: 4px;
+
+    transition: all 0.2s ease-in;
+}
+
+.primary {
+    background: #333;
+
+    &:hover {
+        background: #404040;
+    }
+}
+
+.ghost {
+    background-color: transparent;
+
+    &:hover {
+        background-color: #404040;
+    }
+}
+
+.icon {
+    padding: 4px;
+}

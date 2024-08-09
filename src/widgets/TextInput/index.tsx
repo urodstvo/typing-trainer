@@ -1,6 +1,7 @@
 import { Timer } from '@/components/Timer';
+import { Button } from '@/shared/ui/button';
 import clsx from 'clsx';
-import { createRef, useEffect, useMemo, useRef } from 'react';
+import { createRef, useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './textinput.module.css';
 
@@ -30,6 +31,7 @@ const getLetters = (text: string) => {
 const TextContainer = ({ children }: { children: string }) => {
     const text = children;
     const letters = useMemo(() => getLetters(text), [text]);
+    const [isFocused, setIsFocused] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);
@@ -47,7 +49,16 @@ const TextContainer = ({ children }: { children: string }) => {
     }, [letterRefs]);
 
     return (
-        <div className={styles.paper} ref={textContainerRef} tabIndex={0} onFocus={() => inputRef.current?.focus()}>
+        <div
+            className={styles.paper}
+            ref={textContainerRef}
+            tabIndex={0}
+            onFocus={() => {
+                inputRef.current?.focus();
+                setIsFocused(true);
+            }}
+            onBlur={() => setIsFocused(false)}
+        >
             {letters.map((word, wordIndex) => (
                 <div className={styles.word} key={wordIndex}>
                     {word.map(({ letter, index }) => (
@@ -68,6 +79,7 @@ const TextContainer = ({ children }: { children: string }) => {
                 type="text"
                 maxLength={text.length}
                 ref={inputRef}
+                autoFocus
                 onChange={(e) => {
                     const target = e.target as HTMLInputElement;
                     const index = target.value.length - 1;
@@ -87,18 +99,19 @@ const TextContainer = ({ children }: { children: string }) => {
                     if (index === -1) letterRefs[0].current?.classList.add(styles.current);
                 }}
             />
+            {!isFocused && <div className={styles.overlay}>Click here to focus</div>}
         </div>
     );
 };
+const text =
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit et fugiat dolor eligendi, accusantium aliquid? Officiis voluptas numquam a ut, ipsa esse illum veritatis explicabo? Esse enim corporis quo labore!';
 
 export const TextInput = () => {
-    const text =
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit et fugiat dolor eligendi, accusantium aliquid? Officiis voluptas numquam a ut, ipsa esse illum veritatis explicabo? Esse enim corporis quo labore!';
-
     return (
-        <div className={styles.container}>
-            <Timer seconds={5} isStarted onEnd={() => console.log('end')} />
+        <section className={styles.container}>
+            <Timer seconds={30} isStarted onEnd={() => console.log('end')} />
             <TextContainer>{text}</TextContainer>
-        </div>
+            <Button>reset</Button>
+        </section>
     );
 };
