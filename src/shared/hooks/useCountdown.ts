@@ -8,7 +8,7 @@ export const useCountdown = (seconds: number) => {
     }, [seconds]);
 
     useEffect(() => {
-        let timer: NodeJS.Timeout;
+        let timer: number;
         if (seconds > 0) {
             timer = setInterval(() => {
                 setSecondsLeft((prev) => {
