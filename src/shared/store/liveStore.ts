@@ -22,6 +22,7 @@ type Action = {
         incCharTyped: () => void;
         incErrorsCount: () => void;
         reset: () => void;
+        repeat: () => void;
     };
 };
 
@@ -37,12 +38,14 @@ const initialState: State = {
 export const useLiveStore = create<State & Action>()((set) => ({
     ...initialState,
     actions: {
-        setText: (text: string) => set({ text }),
+        setText: (text: string) =>
+            set({ text: text === '' ? texts[Math.round(Math.random() * (texts.length - 1))] : text }),
         incTimeElapsed: () => set((state) => ({ timeElapsed: state.timeElapsed + 1 })),
         start: () => set({ isStarted: true, isFinished: false }),
         finish: () => set({ isStarted: false, isFinished: true }),
         incCharTyped: () => set((state) => ({ charTyped: state.charTyped + 1 })),
         incErrorsCount: () => set((state) => ({ errorsCount: state.errorsCount + 1 })),
         reset: () => set({ ...initialState, text: texts[Math.round(Math.random() * (texts.length - 1))] }),
+        repeat: () => set((state) => ({ ...initialState, text: state.text })),
     },
 }));

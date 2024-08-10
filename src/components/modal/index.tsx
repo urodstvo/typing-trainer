@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 
 type ModalProps = {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     title?: string;
     isOpened: boolean;
     onClose: () => void;
@@ -25,7 +25,7 @@ const ModalBase = ({ children, title = '', onClose }: ModalProps) => {
                 </Button>
                 <h2 className={styles.modalTitle}>{title}</h2>
             </header>
-            <hr className={styles.divider} />
+            {title !== '' && <hr className={styles.divider} />}
             <div className={styles.modalBody}>{children}</div>
         </div>
     );

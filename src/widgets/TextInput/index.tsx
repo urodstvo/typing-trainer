@@ -4,6 +4,7 @@ import { useHistoryStore } from '@/shared/store/historyStore';
 import { useLiveStore } from '@/shared/store/liveStore';
 import { useSettingsStore } from '@/shared/store/settingsStore';
 import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
 import clsx from 'clsx';
 import { createRef, useCallback, useEffect, useMemo, useRef } from 'react';
 
@@ -118,9 +119,8 @@ const TextContainer = () => {
                         ))}
                     </div>
                 ))}
-                <input
+                <Input
                     className={styles.input}
-                    type="text"
                     ref={inputRef}
                     maxLength={text.length}
                     onInput={() => !isStarted && !isFinished && liveActions.start()}
@@ -139,7 +139,7 @@ const TextContainer = () => {
                     restart
                 </Button>
             ) : (
-                <p className={styles.tip}>start typing to start</p>
+                <p className={styles.tip}>start typing to start training</p>
             )}
         </>
     );
@@ -175,12 +175,17 @@ const ResultModal = () => {
         historyActions.addAccuracy(accuracy);
         historyActions.addErrors(errors);
         historyActions.addWpm(Math.round((chars / 5 / time) * 60));
-
-        liveActions.reset();
-    }, [accuracy, chars, errors, historyActions, liveActions, time]);
+    }, [accuracy, chars, errors, historyActions, time]);
 
     return (
-        <Modal isOpened={isFinished && !isStarted} onClose={handleClose} title="Result">
+        <Modal
+            isOpened={isFinished && !isStarted}
+            onClose={() => {
+                handleClose();
+                liveActions.reset();
+            }}
+            title="Result"
+        >
             <div className={styles.modalContent}>
                 <div className={styles.modalResults}>
                     <article className={styles.result}>
@@ -196,6 +201,25 @@ const ResultModal = () => {
                         <p>{accuracy}%</p>
                     </article>
                 </div>
+                <footer className={styles.modalFooter}>
+                    <Button
+                        variant="ghost"
+                        onClick={() => {
+                            liveActions.repeat();
+                            handleClose();
+                        }}
+                    >
+                        Repeat
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleClose();
+                            liveActions.reset();
+                        }}
+                    >
+                        Restart
+                    </Button>
+                </footer>
             </div>
         </Modal>
     );
