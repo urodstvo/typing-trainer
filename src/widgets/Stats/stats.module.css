@@ -37,3 +37,15 @@
     font-size: 40px;
     line-height: 48px;
 }
+
+@media screen and (max-width: 768px) {
+    .statsContainer {
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+    }
+
+    .statsCard {
+        width: 100%;
+    }
+}

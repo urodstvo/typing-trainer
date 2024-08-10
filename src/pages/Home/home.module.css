@@ -4,3 +4,9 @@
     align-items: center;
     padding: 40px;
 }
+
+@media (max-width: 768px) {
+    .settings {
+        padding: 0px;
+    }
+}

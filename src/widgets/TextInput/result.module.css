@@ -43,3 +43,11 @@
     justify-content: flex-end;
     gap: 20px;
 }
+
+@media (max-width: 768px) {
+    .modalResults {
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 40px;
+    }
+}

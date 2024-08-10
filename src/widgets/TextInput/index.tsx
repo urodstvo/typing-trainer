@@ -38,10 +38,11 @@ const TextContainer = () => {
     }, [letterRefs]);
 
     useEffect(() => {
-        const input = inputRef.current as HTMLInputElement;
         if (!isStarted && !isFinished) {
+            const input = inputRef.current as HTMLInputElement;
             input.value = '';
             input.dispatchEvent(new Event('input'));
+            if (textContainerRef.current) textContainerRef.current.style.transform = `translate(0, 0)`;
         }
     }, [text, isStarted, isFinished]);
 
@@ -49,6 +50,17 @@ const TextContainer = () => {
         (e: Event) => {
             const target = e.target as HTMLInputElement;
             const index = target.value.length - 1;
+
+            if (index >= 0) {
+                const ind = index;
+                if (textContainerRef.current && letterRefs[ind].current) {
+                    const rect = textContainerRef.current.getBoundingClientRect();
+                    const letterRect = letterRefs[ind].current.getBoundingClientRect();
+
+                    const diff = letterRect?.y - rect?.y;
+                    textContainerRef.current.style.transform = `translate(0, -${diff}px)`;
+                }
+            }
 
             if (!checkCase) target.value = target.value.toLowerCase();
 
@@ -64,7 +76,10 @@ const TextContainer = () => {
                 if (i === index && i < letterRefs.length - 1) letterRefs[i + 1].current?.classList.add(styles.current);
             });
 
-            if (index === -1) letterRefs[0].current?.classList.add(styles.current);
+            if (index === -1) {
+                letterRefs[0].current?.classList.add(styles.current);
+                if (textContainerRef.current) textContainerRef.current.style.transform = `translate(0, 0)`;
+            }
 
             if (index === letterRefs.length - 1) liveActions.finish();
         },
@@ -78,36 +93,51 @@ const TextContainer = () => {
         return () => input.removeEventListener('input', handleChange);
     }, [handleChange]);
 
+    // useEffect(() => {
+    //     const container = textContainerRef.current as HTMLDivElement;
+    //     const input = inputRef.current as HTMLInputElement;
+
+    //     const handleFocus = () => {
+    //         input.focus();
+    //     };
+    //     container.addEventListener('focus', handleFocus, { once: true });
+
+    //     return () => container.removeEventListener('focus', handleFocus);
+    // }, []);
+
     return (
         <>
-            <div className={styles.paper} ref={textContainerRef} tabIndex={0} onFocus={() => inputRef.current?.focus()}>
-                {letters.map((word, wordIndex) => (
-                    <div className={styles.word} key={wordIndex}>
-                        {word.map(({ letter, index }) => (
-                            <span
-                                className={clsx(styles.letter, {
-                                    [styles.space]: letter === ' ',
-                                })}
-                                key={`${letter}${index}`}
-                                ref={letterRefs[index]}
-                            >
-                                {letter}
-                            </span>
-                        ))}
-                    </div>
-                ))}
+            <div className={styles.paperContainer}>
+                <div className={styles.paper} ref={textContainerRef} onClick={() => inputRef.current?.focus()}>
+                    {letters.map((word, wordIndex) => (
+                        <div className={styles.word} key={wordIndex}>
+                            {word.map(({ letter, index }) => (
+                                <span
+                                    className={clsx(styles.letter, {
+                                        [styles.space]: letter === ' ',
+                                    })}
+                                    key={`${letter}${index}`}
+                                    ref={letterRefs[index]}
+                                >
+                                    {letter}
+                                </span>
+                            ))}
+                        </div>
+                    ))}
+                </div>
                 <Input
                     className={styles.input}
                     ref={inputRef}
                     maxLength={text.length}
                     onInput={() => !isStarted && !isFinished && liveActions.start()}
                     onPaste={(e) => e.preventDefault()}
+                    disabled={isFinished}
                     autoFocus
                 />
             </div>
             {isStarted ? (
                 <Button
-                    tabIndex={1}
+                    tabIndex={0}
                     onClick={() => {
                         liveActions.reset();
                         inputRef.current?.focus();

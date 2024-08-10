@@ -6,6 +6,10 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:focus {
+        outline: 2px solid #444;
+    }
 }
 
 .primary {
