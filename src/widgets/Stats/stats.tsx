@@ -16,6 +16,7 @@ const ErrorsCard = () => {
 const WpmCard = () => {
     const chars = useLiveStore((state) => state.charTyped);
     const time = useLiveStore((state) => state.timeElapsed);
+    // average length of words in english = 5
     const wpm = useMemo(() => Math.round((chars / 5 / time) * 60), [chars, time]);
 
     return (
