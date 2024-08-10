@@ -15,6 +15,9 @@ Light Clone of [monkeytype.com](https://monkeytype.com/)
 
 -   Saving previous results (localstorage)
 
-TODO:
+### TODO:
 
--   add responsivness
+| feature       | progress |
+| ------------- | -------- |
+| responsivness | &check;  |
+| tests         | -        |
