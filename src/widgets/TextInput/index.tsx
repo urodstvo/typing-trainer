@@ -41,10 +41,10 @@ const TextContainer = () => {
         if (!isStarted && !isFinished) {
             const input = inputRef.current as HTMLInputElement;
             input.value = '';
-            input.dispatchEvent(new Event('input'));
+            letterRefs.forEach((l) => l.current?.classList.remove(styles.current, styles.incorrect, styles.correct));
             if (textContainerRef.current) textContainerRef.current.style.transform = `translate(0, 0)`;
         }
-    }, [text, isStarted, isFinished]);
+    }, [text, isStarted, isFinished, letterRefs]);
 
     const handleChange = useCallback(
         (e: Event) => {
