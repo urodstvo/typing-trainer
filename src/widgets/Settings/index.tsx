@@ -1,5 +1,5 @@
 import { CaseButton, DurationButton, PunctuationButton } from './buttons';
-import { SettingsModal } from './custom';
+import { SettingsModal } from './modal';
 import styles from './settings.module.css';
 
 const durations = [30, 60, 90, 120];

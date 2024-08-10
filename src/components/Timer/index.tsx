@@ -19,6 +19,7 @@ export const Timer = () => {
 
     const [secondsLeft, setSecondsLeft] = useState<number>(duration);
 
+    // when timer isn't started, set new duration
     useEffect(() => {
         if (!isStarted && !isFinished) setSecondsLeft(duration);
     }, [duration, isStarted, isFinished]);

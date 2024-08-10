@@ -19,6 +19,7 @@ const TextContainer = () => {
     const checkCase = useSettingsStore((state) => state.checkCase);
     const checkPunctuation = useSettingsStore((state) => state.checkPunctuation);
 
+    // format text according to settings
     const text = useMemo(() => {
         let res = textSrc;
         if (!checkCase) res = res.toLowerCase();
@@ -33,10 +34,12 @@ const TextContainer = () => {
     const letters = useMemo(() => getLetters(text), [text]);
     const letterRefs = useMemo(() => text.split('').map(() => createRef<HTMLSpanElement>()), [text]);
 
+    // set caret to beginning
     useEffect(() => {
         letterRefs[0].current?.classList.add(styles.current);
     }, [letterRefs]);
 
+    // reset states
     useEffect(() => {
         if (!isStarted && !isFinished) {
             const input = inputRef.current as HTMLInputElement;
@@ -51,6 +54,7 @@ const TextContainer = () => {
             const target = e.target as HTMLInputElement;
             const index = target.value.length - 1;
 
+            // scroll line
             if (index >= 0) {
                 const ind = index;
                 if (textContainerRef.current && letterRefs[ind].current) {
@@ -67,8 +71,11 @@ const TextContainer = () => {
             liveActions.incCharTyped();
             if (index >= 0 && target.value[index] !== letterRefs[index].current?.textContent)
                 liveActions.incErrorsCount();
+
+            // reset classes
             letterRefs.forEach((l) => l.current?.classList.remove(styles.current, styles.incorrect, styles.correct));
 
+            // set classes
             target.value.split('').forEach((l, i) => {
                 if (l === letterRefs[i].current?.textContent) letterRefs[i].current?.classList.add(styles.correct);
                 else letterRefs[i].current?.classList.add(styles.incorrect);
@@ -86,24 +93,13 @@ const TextContainer = () => {
         [letterRefs, liveActions, checkCase],
     );
 
+    // add event listner to input
     useEffect(() => {
         const input = inputRef.current as HTMLInputElement;
         input.addEventListener('input', handleChange);
 
         return () => input.removeEventListener('input', handleChange);
     }, [handleChange]);
-
-    // useEffect(() => {
-    //     const container = textContainerRef.current as HTMLDivElement;
-    //     const input = inputRef.current as HTMLInputElement;
-
-    //     const handleFocus = () => {
-    //         input.focus();
-    //     };
-    //     container.addEventListener('focus', handleFocus, { once: true });
-
-    //     return () => container.removeEventListener('focus', handleFocus);
-    // }, []);
 
     return (
         <>
